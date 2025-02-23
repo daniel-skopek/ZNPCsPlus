@@ -48,7 +48,8 @@ public class HologramImpl extends Viewable implements Hologram {
     }
 
     public void addTextLine(String line) {
-        addTextLineComponent(textSerializer.deserialize(textSerializer.serialize(MiniMessage.miniMessage().deserialize(line))));
+        Component component = line.contains("§") ? Component.text(line) : MiniMessage.miniMessage().deserialize(line);
+        addTextLineComponent(textSerializer.deserialize(textSerializer.serialize(component)));
     }
 
     public void addItemLineStack(org.bukkit.inventory.ItemStack item) {
