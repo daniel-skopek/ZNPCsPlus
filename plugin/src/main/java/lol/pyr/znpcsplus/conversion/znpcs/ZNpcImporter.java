@@ -25,7 +25,7 @@ import lol.pyr.znpcsplus.packets.PacketFactory;
 import lol.pyr.znpcsplus.scheduling.TaskScheduler;
 import lol.pyr.znpcsplus.skin.SkinImpl;
 import lol.pyr.znpcsplus.skin.cache.MojangSkinCache;
-import lol.pyr.znpcsplus.skin.descriptor.FetchingDescriptor;
+import lol.pyr.znpcsplus.skin.descriptor.NameFetchingDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.MirrorDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.PrefetchedDescriptor;
 import lol.pyr.znpcsplus.util.BungeeConnector;
@@ -175,7 +175,7 @@ public class ZNpcImporter implements DataImporter {
             }
 
             if (model.getSkinName() != null) {
-                npc.setProperty(propertyRegistry.getByName("skin", SkinDescriptor.class), new FetchingDescriptor(skinCache, model.getSkinName()));
+                npc.setProperty(propertyRegistry.getByName("skin", SkinDescriptor.class), new NameFetchingDescriptor(skinCache, model.getSkinName()));
             }
             else if (model.getSkin() != null && model.getSignature() != null) {
                 npc.setProperty(propertyRegistry.getByName("skin", SkinDescriptor.class), new PrefetchedDescriptor(new SkinImpl(model.getSkin(), model.getSignature())));

@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.CompletableFuture;
 
-public class FetchingDescriptor implements BaseSkinDescriptor, SkinDescriptor {
+public class NameFetchingDescriptor implements BaseSkinDescriptor, SkinDescriptor {
     private final MojangSkinCache skinCache;
     private final String name;
 
-    public FetchingDescriptor(MojangSkinCache skinCache, String name) {
+    public NameFetchingDescriptor(MojangSkinCache skinCache, String name) {
         this.skinCache = skinCache;
         this.name = name;
     }
