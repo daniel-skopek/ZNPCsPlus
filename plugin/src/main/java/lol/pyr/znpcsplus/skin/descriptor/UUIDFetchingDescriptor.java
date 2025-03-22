@@ -36,7 +36,7 @@ public class UUIDFetchingDescriptor implements BaseSkinDescriptor, SkinDescripto
 
     @Override
     public String serialize() {
-        return "fetching-uuid;" + uuid.toString();
+        return "fetching;" + uuid.toString();
     }
 
 }
