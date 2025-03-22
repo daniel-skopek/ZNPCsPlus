@@ -39,6 +39,6 @@ public class NameFetchingDescriptor implements BaseSkinDescriptor, SkinDescripto
 
     @Override
     public String serialize() {
-        return "fetching;" + name;
+        return "fetching-name;" + name;
     }
 }
