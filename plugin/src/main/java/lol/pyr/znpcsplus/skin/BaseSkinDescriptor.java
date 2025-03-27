@@ -7,7 +7,6 @@ import lol.pyr.znpcsplus.skin.descriptor.NameFetchingDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.MirrorDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.PrefetchedDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.UUIDFetchingDescriptor;
-import lol.pyr.znpcsplus.util.UUIDUtil;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -25,9 +24,13 @@ public interface BaseSkinDescriptor extends SkinDescriptor {
     static BaseSkinDescriptor deserialize(MojangSkinCache skinCache, String str) {
         String[] arr = str.split(";");
         if (arr[0].equalsIgnoreCase("mirror")) return new MirrorDescriptor(skinCache);
-        else if (arr[0].equalsIgnoreCase("fetching")) {
+        else if (arr[0].equalsIgnoreCase("fetching-uuid")) {
             String value = String.join(";", Arrays.copyOfRange(arr, 1, arr.length));
-            return UUIDUtil.isUUID(value) ? new UUIDFetchingDescriptor(skinCache, UUID.fromString(value)) : new NameFetchingDescriptor(skinCache, value);
+            return new UUIDFetchingDescriptor(skinCache, UUID.fromString(value));
+        }
+        else if(arr[0].equalsIgnoreCase("fetching")) {
+            String value = String.join(";", Arrays.copyOfRange(arr, 1, arr.length));
+            return new NameFetchingDescriptor(skinCache, value);
         }
         else if (arr[0].equalsIgnoreCase("prefetched")) {
             List<TextureProperty> properties = new ArrayList<>();
