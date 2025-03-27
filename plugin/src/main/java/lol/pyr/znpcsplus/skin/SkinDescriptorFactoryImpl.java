@@ -3,12 +3,14 @@ package lol.pyr.znpcsplus.skin;
 import lol.pyr.znpcsplus.api.skin.SkinDescriptor;
 import lol.pyr.znpcsplus.api.skin.SkinDescriptorFactory;
 import lol.pyr.znpcsplus.skin.cache.MojangSkinCache;
-import lol.pyr.znpcsplus.skin.descriptor.FetchingDescriptor;
+import lol.pyr.znpcsplus.skin.descriptor.NameFetchingDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.MirrorDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.PrefetchedDescriptor;
+import lol.pyr.znpcsplus.skin.descriptor.UUIDFetchingDescriptor;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 
 public class SkinDescriptorFactoryImpl implements SkinDescriptorFactory {
     private final MojangSkinCache skinCache;
@@ -26,7 +28,12 @@ public class SkinDescriptorFactoryImpl implements SkinDescriptorFactory {
 
     @Override
     public SkinDescriptor createRefreshingDescriptor(String playerName) {
-        return new FetchingDescriptor(skinCache, playerName);
+        return new NameFetchingDescriptor(skinCache, playerName);
+    }
+
+    @Override
+    public SkinDescriptor createRefreshingDescriptor(UUID playerUUID) {
+        return new UUIDFetchingDescriptor(skinCache, playerUUID);
     }
 
     @Override

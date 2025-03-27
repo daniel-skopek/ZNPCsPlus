@@ -11,7 +11,7 @@ import lol.pyr.znpcsplus.npc.NpcImpl;
 import lol.pyr.znpcsplus.npc.NpcRegistryImpl;
 import lol.pyr.znpcsplus.npc.NpcTypeRegistryImpl;
 import lol.pyr.znpcsplus.skin.cache.MojangSkinCache;
-import lol.pyr.znpcsplus.skin.descriptor.FetchingDescriptor;
+import lol.pyr.znpcsplus.skin.descriptor.NameFetchingDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.MirrorDescriptor;
 import lol.pyr.znpcsplus.skin.descriptor.PrefetchedDescriptor;
 import net.kyori.adventure.text.Component;
@@ -67,7 +67,7 @@ public class SkinCommand implements CommandHandler {
         } else if (type.equalsIgnoreCase("dynamic")) {
             context.ensureArgsNotEmpty();
             String name = context.dumpAllArgs();
-            npc.setProperty(propertyRegistry.getByName("skin", SkinDescriptor.class), new FetchingDescriptor(skinCache, name));
+            npc.setProperty(propertyRegistry.getByName("skin", SkinDescriptor.class), new NameFetchingDescriptor(skinCache, name));
             npc.respawn();
             context.halt(Component.text("The NPC's skin will now be resolved per-player from \"" + name + "\""));
         } else if (type.equalsIgnoreCase("url")) {
