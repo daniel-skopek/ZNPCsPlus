@@ -11,13 +11,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public abstract class Viewable {
-    private final static List<WeakReference<Viewable>> all = new ArrayList<>();
+    private final static List<WeakReference<Viewable>> all = Collections.synchronizedList(new ArrayList<>());
 
     public static List<Viewable> all() {
-        all.removeIf(reference -> reference.get() == null);
-        return all.stream()
-                .map(Reference::get)
-                .collect(Collectors.toList());
+        synchronized (all) {
+            all.removeIf(reference -> reference.get() == null);
+            return all.stream()
+                    .map(Reference::get)
+                    .collect(Collectors.toList());
+        }
     }
 
     private boolean queueRunning = false;
