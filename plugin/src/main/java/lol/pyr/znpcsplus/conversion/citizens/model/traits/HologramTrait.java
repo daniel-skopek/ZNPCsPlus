@@ -24,7 +24,7 @@ public class HologramTrait extends SectionCitizensTrait {
         if (linesSection != null) {
             List<String> keys = new ArrayList<>(linesSection.getKeys(false));
             for (int i = keys.size() - 1; i >= 0; i--) {
-                String line = linesSection.getConfigurationSection(keys.get(i)).getString("text");
+                String line = linesSection.isConfigurationSection(keys.get(i)) ? linesSection.getConfigurationSection(keys.get(i)).getString("text") : linesSection.getString(keys.get(i));
                 if (line != null) {
                     Component component = textSerializer.deserialize(line);
                     npc.getHologram().addTextLineComponent(component);
