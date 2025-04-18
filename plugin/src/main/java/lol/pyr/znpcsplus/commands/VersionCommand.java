@@ -53,6 +53,8 @@ public class VersionCommand implements CommandHandler {
         }
         if (buildId != null && !buildId.isEmpty()) {
             versionBuilder.append(" (Build #").append(buildId).append(")");
+        } else {
+            versionBuilder.append(" (Development Build)");
         }
 
         String version = versionBuilder.toString();
