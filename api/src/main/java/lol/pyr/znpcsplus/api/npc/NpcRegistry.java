@@ -66,6 +66,12 @@ public interface NpcRegistry {
     void delete(String id);
 
     /**
+     * Deletes an NPC entry by its UUID
+     * @param uuid The UUID of the NPC entry
+     */
+    void delete(UUID uuid);
+
+    /**
      * Register an NPC to this registry
      * NpcEntry instances can be obtained through the NpcSerializer classes
      * @param entry The npc to be registered

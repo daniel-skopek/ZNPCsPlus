@@ -202,6 +202,14 @@ public class NpcRegistryImpl implements NpcRegistry {
         storage.deleteNpc(entry);
     }
 
+    @Override
+    public void delete(UUID uuid) {
+        NpcEntryImpl entry = npcUuidLookupMap.get(uuid);
+        if (entry == null) return;
+        unregister(entry);
+        storage.deleteNpc(entry);
+    }
+
     public void switchIds(String oldId, String newId) {
         NpcEntryImpl entry = getById(oldId);
         delete(oldId);
