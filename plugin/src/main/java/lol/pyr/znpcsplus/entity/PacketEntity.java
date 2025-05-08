@@ -71,6 +71,9 @@ public class PacketEntity implements PropertyHolder {
         return FutureUtil.exceptionPrintingRunAsync(() -> {
             if (type == EntityTypes.PLAYER) packetFactory.spawnPlayer(player, this, properties).join();
             else packetFactory.spawnEntity(player, this, properties);
+            if (vehicle != null) {
+                setVehicle(vehicle);
+            }
             if (vehicleId != null) {
                 packetFactory.setPassengers(player, vehicleId, this.getEntityId());
             }
