@@ -52,6 +52,9 @@ public abstract class Viewable {
         queueVisibilityTask(() -> {
             UNSAFE_hideAll();
             viewers.clear();
+            synchronized (all) {
+                all.removeIf(reference -> reference.get() == null || reference.get() == this);
+            }
         });
     }
 

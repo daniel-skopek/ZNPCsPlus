@@ -18,7 +18,7 @@ public class TargetNpcProperty extends EntityPropertyImpl<NpcEntryImpl> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         NpcEntryImpl value = entity.getProperty(this);
         if (value == null) return;
         if (value.getNpc().getEntity().getEntityId() == entity.getEntityId()) return;

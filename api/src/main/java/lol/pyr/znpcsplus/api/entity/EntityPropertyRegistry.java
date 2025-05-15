@@ -32,10 +32,24 @@ public interface EntityPropertyRegistry {
     <T> EntityProperty<T> getByName(String name, Class<T> type);
 
     /**
+     * Register a dummy property that can be used to store unique information per npc<br>
+     * Note: Properties registered this way will be player-modifiable by default
+     *
+     * @param name The name of the new property
+     * @param type The type of the new property
+     * @deprecated Use {@link #registerDummy(String, Class, boolean)} instead
+     */
+    @Deprecated
+    default void registerDummy(String name, Class<?> type) {
+        registerDummy(name, type, true);
+    }
+
+    /**
      * Register a dummy property that can be used to store unique information per npc
      *
      * @param name The name of the new property
      * @param type The type of the new property
+     * @param playerModifiable Whether this property can be modified by players using commands
      */
-    void registerDummy(String name, Class<?> type);
+    void registerDummy(String name, Class<?> type, boolean playerModifiable);
 }

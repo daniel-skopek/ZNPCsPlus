@@ -10,7 +10,6 @@ import com.github.retrooper.packetevents.protocol.nbt.NBTInt;
 import com.github.retrooper.packetevents.protocol.nbt.NBTString;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.protocol.world.BlockFace;
-import lol.pyr.znpcsplus.ZNpcsPlusBootstrap;
 import lol.pyr.znpcsplus.api.entity.EntityProperty;
 import lol.pyr.znpcsplus.api.entity.EntityPropertyRegistry;
 import lol.pyr.znpcsplus.api.skin.SkinDescriptor;
@@ -109,7 +108,7 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
          */
     }
 
-    public void registerTypes(ZNpcsPlusBootstrap plugin, PacketFactory packetFactory, LegacyComponentSerializer textSerializer, TaskScheduler taskScheduler) {
+    public void registerTypes(PacketFactory packetFactory, LegacyComponentSerializer textSerializer, TaskScheduler taskScheduler) {
         ServerVersion ver = PacketEvents.getAPI().getServerManager().getVersion();
         boolean legacyBooleans = ver.isOlderThan(ServerVersion.V_1_9);
         boolean legacyNames = ver.isOlderThan(ServerVersion.V_1_9);
@@ -133,7 +132,7 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
 
         register(new DummyProperty<>("permission_required", false));
 
-        register(new ForceBodyRotationProperty(plugin, taskScheduler));
+        register(new ForceBodyRotationProperty(taskScheduler));
 
         register(new DummyProperty<>("player_knockback", false));
         register(new DummyProperty<>("player_knockback_exempt_permission", String.class));
@@ -192,7 +191,7 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         else if (ver.isNewerThanOrEquals(ServerVersion.V_1_9)) babyIndex = 11;
         else babyIndex = 12;
         if (ver.isOlderThan(ServerVersion.V_1_9)) {
-            register(new EncodedByteProperty<>("baby", false, babyIndex, obj -> (byte) (obj ? -1 : 0)));
+            register(new LegacyBabyProperty(babyIndex));
         } else {
             register(new BooleanProperty("baby", babyIndex, false, legacyBooleans));
         }
@@ -286,7 +285,9 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         else horseIndex = 16;
         int horseEating = ver.isNewerThanOrEquals(ServerVersion.V_1_12) ? 0x10 : 0x20;
         register(new BitsetProperty("is_tame", horseIndex, 0x02, false, legacyBooleans));
-        register(new BitsetProperty("is_saddled", horseIndex, 0x04, false, legacyBooleans));
+        if (ver.isOlderThan(ServerVersion.V_1_21)) {
+            register(new BitsetProperty("is_saddled", horseIndex, 0x04, false, legacyBooleans));
+        }
         register(new BitsetProperty("is_eating", horseIndex, horseEating, false, legacyBooleans));
         register(new BitsetProperty("is_rearing", horseIndex, horseEating << 1, false, legacyBooleans));
         register(new BitsetProperty("has_mouth_open", horseIndex, horseEating << 2, false, legacyBooleans));
@@ -354,10 +355,14 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         // Chested Horse
         if (ver.isOlderThan(ServerVersion.V_1_11)) {
             register(new BitsetProperty("has_chest", horseIndex, 0x08, false, legacyBooleans));
-            linkProperties("is_saddled", "has_chest", "is_eating", "is_rearing", "has_mouth_open");
+            linkProperties("is_tame", "is_saddled", "has_chest", "is_eating", "is_rearing", "has_mouth_open");
         } else {
             register(new BooleanProperty("has_chest", horseVariantIndex, false, legacyBooleans));
-            linkProperties("is_saddled", "is_eating", "is_rearing", "has_mouth_open");
+            if (ver.isOlderThan(ServerVersion.V_1_21)){
+                linkProperties("is_tame", "is_saddled", "is_eating", "is_rearing", "has_mouth_open");
+            } else {
+                linkProperties("is_tame", "is_eating", "is_rearing", "has_mouth_open");
+            }
         }
 
         // Slime, Magma Cube and Phantom
@@ -457,6 +462,33 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         if (ver.isOlderThan(ServerVersion.V_1_11)) {
             if (legacyBooleans) register(new EncodedByteProperty<>("skeleton_type", SkeletonType.NORMAL, 13, SkeletonType::getLegacyId));
             else register(new EncodedIntegerProperty<>("skeleton_type", SkeletonType.NORMAL, ver.isOlderThan(ServerVersion.V_1_10) ? 11 : 12, Enum::ordinal));
+        }
+
+        // Zombie
+        int zombieIndex;
+        if (ver.isNewerThanOrEquals(ServerVersion.V_1_17)) zombieIndex = 17;
+        else if (ver.isNewerThanOrEquals(ServerVersion.V_1_16)) zombieIndex = 16;
+        else if (ver.isNewerThanOrEquals(ServerVersion.V_1_10)) zombieIndex = 13;
+        else if (ver.isNewerThanOrEquals(ServerVersion.V_1_9)) zombieIndex = 12;
+        else zombieIndex = 13;
+
+        if (ver.isOlderThan(ServerVersion.V_1_9)) {
+            register(new EncodedByteProperty<>("zombie_is_villager", false, zombieIndex++, b -> (byte) (b ? 1 : 0)));
+        } else if (ver.isOlderThan(ServerVersion.V_1_11)) {
+            register(new EncodedIntegerProperty<>("zombie_type", ZombieType.ZOMBIE, zombieIndex++, Enum::ordinal));
+        } else {
+            zombieIndex++; // Not a mistake, this is field unused in 1.11+
+        }
+        if (ver.isOlderThan(ServerVersion.V_1_9)) {
+            register(new EncodedByteProperty<>("is_converting", false, zombieIndex++, b -> (byte) (b ? 1 : 0)));
+        } else if (ver.isOlderThan(ServerVersion.V_1_11)) {
+            register(new BooleanProperty("is_converting", zombieIndex++, false, legacyBooleans));
+        }
+        if (ver.isNewerThanOrEquals(ServerVersion.V_1_9) && ver.isOlderThan(ServerVersion.V_1_14)) {
+            register(new BooleanProperty("zombie_hands_held_up", zombieIndex++, false, legacyBooleans));
+        }
+        if (ver.isNewerThanOrEquals(ServerVersion.V_1_13)) {
+            register(new BooleanProperty("zombie_becoming_drowned", zombieIndex++, false, legacyBooleans));
         }
 
         if (!ver.isNewerThanOrEquals(ServerVersion.V_1_9)) return;
@@ -758,8 +790,8 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
     }
 
     @Override
-    public void registerDummy(String name, Class<?> type) {
-        register(new DummyProperty<>(name, type));
+    public void registerDummy(String name, Class<?> type, boolean playerModifiable) {
+        register(new DummyProperty<>(name, type, playerModifiable));
     }
 
     public EntityPropertyImpl<?> getByName(String name) {

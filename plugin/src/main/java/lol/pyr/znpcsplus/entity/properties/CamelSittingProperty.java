@@ -20,7 +20,7 @@ public class CamelSittingProperty extends EntityPropertyImpl<Boolean> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         boolean value = entity.getProperty(this);
         if (value) {
             properties.put(poseIndex, newEntityData(poseIndex, EntityDataTypes.ENTITY_POSE, EntityPose.SITTING));

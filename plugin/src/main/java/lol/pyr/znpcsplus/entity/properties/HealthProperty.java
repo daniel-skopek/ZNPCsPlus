@@ -18,10 +18,10 @@ public class HealthProperty extends EntityPropertyImpl<Float> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         float health = entity.getProperty(this);
         health = (float) Attributes.MAX_HEALTH.sanitizeValue(health);
-        properties.put(index, new EntityData(index, EntityDataTypes.FLOAT, health));
+        properties.put(index, new EntityData<>(index, EntityDataTypes.FLOAT, health));
 
     }
 }

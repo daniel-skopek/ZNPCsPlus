@@ -31,13 +31,22 @@ public class BitsetProperty extends EntityPropertyImpl<Boolean> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
-        EntityData oldData = properties.get(index);
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
+        EntityData<?> oldData = properties.get(index);
         boolean enabled = entity.getProperty(this);
         if (inverted) enabled = !enabled;
-        properties.put(index,
-                integer ? newEntityData(index, EntityDataTypes.INT, (oldData == null ? 0 : (int) oldData.getValue()) | (enabled ? bitmask : 0)) :
-                newEntityData(index, EntityDataTypes.BYTE, (byte) ((oldData == null ? 0 : (byte) oldData.getValue()) | (enabled ? bitmask : 0))));
-
+        if (integer) {
+            int oldValue = 0;
+            if (oldData != null && oldData.getValue() instanceof Number) {
+                oldValue = ((Number) oldData.getValue()).intValue();
+            }
+            properties.put(index, newEntityData(index, EntityDataTypes.INT, oldValue | (enabled ? bitmask : 0)));
+        } else {
+            byte oldValue = 0;
+            if (oldData != null && oldData.getValue() instanceof Number) {
+                oldValue = ((Number) oldData.getValue()).byteValue();
+            }
+            properties.put(index, newEntityData(index, EntityDataTypes.BYTE, (byte) (oldValue | (enabled ? bitmask : 0))));
+        }
     }
 }

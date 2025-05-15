@@ -35,13 +35,13 @@ public class AttributeProperty extends EntityPropertyImpl<Double> {
     }
 
     @Override
-    public List<EntityData> applyStandalone(Player player, PacketEntity packetEntity, boolean isSpawned) {
+    public List<EntityData<?>> applyStandalone(Player player, PacketEntity packetEntity, boolean isSpawned) {
         apply(player, packetEntity, isSpawned, Collections.emptyList());
         return Collections.emptyList();
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
     }
 
     public void apply(Player player, PacketEntity entity, boolean isSpawned, List<WrapperPlayServerUpdateAttributes.Property> properties) {

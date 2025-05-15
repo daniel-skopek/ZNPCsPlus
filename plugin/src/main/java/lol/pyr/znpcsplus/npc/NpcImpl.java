@@ -159,7 +159,7 @@ public class NpcImpl extends Viewable implements Npc {
     private <T> void UNSAFE_refreshProperty(EntityPropertyImpl<T> property) {
         if (!type.isAllowedProperty(property)) return;
         for (Player viewer : getViewers()) {
-            List<EntityData> data = property.applyStandalone(viewer, entity, true);
+            List<EntityData<?>> data = property.applyStandalone(viewer, entity, true);
             if (!data.isEmpty()) packetFactory.sendMetadata(viewer, entity, data);
         }
     }
@@ -232,7 +232,8 @@ public class NpcImpl extends Viewable implements Npc {
     }
 
     @Override
-    public void addAction(InteractionAction action) {
+    public void addAction(InteractionAction action) throws IllegalArgumentException {
+        if (action == null) throw new IllegalArgumentException("action can not be null");
         actions.add(action);
     }
 
@@ -242,7 +243,8 @@ public class NpcImpl extends Viewable implements Npc {
     }
 
     @Override
-    public void editAction(int index, InteractionAction action) {
+    public void editAction(int index, InteractionAction action) throws IllegalArgumentException {
+        if (action == null) throw new IllegalArgumentException("action can not be null");
         actions.set(index, action);
     }
 

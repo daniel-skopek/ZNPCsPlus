@@ -18,7 +18,7 @@ public class RotationProperty extends EntityPropertyImpl<Vector3f> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         Vector3f vec = entity.getProperty(this);
         properties.put(index, newEntityData(index, EntityDataTypes.ROTATION, new com.github.retrooper.packetevents.util.Vector3f(vec.getX(), vec.getY(), vec.getZ())));
     }

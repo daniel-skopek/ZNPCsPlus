@@ -25,15 +25,14 @@ public class TropicalFishVariantProperty<T> extends EntityPropertyImpl<T> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         T value = entity.getProperty(this);
-        if (value == null) {
-            return;
-        }
-        EntityData oldData = properties.get(index);
+        if (value == null) return;
+
+        EntityData<?> oldData = properties.get(index);
         TropicalFishVariant.Builder builder;
-        if (oldData != null && oldData.getType() == EntityDataTypes.INT && oldData.getValue() != null) {
-            int oldVal = (int) oldData.getValue();
+        if (oldData != null && oldData.getType() == EntityDataTypes.INT && oldData.getValue() instanceof Integer) {
+            int oldVal = (Integer) oldData.getValue();
             builder = TropicalFishVariant.Builder.fromInt(oldVal);
         } else {
             builder = new TropicalFishVariant.Builder();

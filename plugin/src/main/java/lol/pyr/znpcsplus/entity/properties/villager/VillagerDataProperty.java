@@ -21,8 +21,8 @@ public abstract class VillagerDataProperty<T> extends EntityPropertyImpl<T> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
-        EntityData oldData = properties.get(index);
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
+        EntityData<?> oldData = properties.get(index);
         VillagerData old = oldData == null ? new VillagerData(VillagerTypes.PLAINS, VillagerProfessions.NONE, 1) : (VillagerData) oldData.getValue();
         properties.put(index, newEntityData(index, EntityDataTypes.VILLAGER_DATA, apply(old, entity.getProperty(this))));
     }

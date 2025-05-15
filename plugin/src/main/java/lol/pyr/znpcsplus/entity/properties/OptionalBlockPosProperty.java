@@ -19,10 +19,10 @@ public class OptionalBlockPosProperty extends EntityPropertyImpl<Vector3i> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         Vector3i value = entity.getProperty(this);
-        if (value == null) properties.put(index, new EntityData(index, EntityDataTypes.OPTIONAL_BLOCK_POSITION, Optional.empty()));
-        else properties.put(index, new EntityData(index, EntityDataTypes.OPTIONAL_BLOCK_POSITION,
+        if (value == null) properties.put(index, new EntityData<>(index, EntityDataTypes.OPTIONAL_BLOCK_POSITION, Optional.empty()));
+        else properties.put(index, new EntityData<>(index, EntityDataTypes.OPTIONAL_BLOCK_POSITION,
                 Optional.of(new com.github.retrooper.packetevents.util.Vector3i(value.getX(), value.getY(), value.getZ()))));
     }
 }

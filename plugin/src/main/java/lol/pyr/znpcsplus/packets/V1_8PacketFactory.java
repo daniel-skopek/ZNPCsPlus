@@ -135,13 +135,13 @@ public class V1_8PacketFactory implements PacketFactory {
 
     @Override
     public void sendAllMetadata(Player player, PacketEntity entity, PropertyHolder properties) {
-        Map<Integer, EntityData> datas = new HashMap<>();
+        Map<Integer, EntityData<?>> datas = new HashMap<>();
         for (EntityProperty<?> property : properties.getAppliedProperties()) ((EntityPropertyImpl<?>) property).apply(player, entity, false, datas);
         sendMetadata(player, entity, new ArrayList<>(datas.values()));
     }
 
     @Override
-    public void sendMetadata(Player player, PacketEntity entity, List<EntityData> data) {
+    public void sendMetadata(Player player, PacketEntity entity, List<EntityData<?>> data) {
         sendPacket(player, new WrapperPlayServerEntityMetadata(entity.getEntityId(), data));
     }
 
@@ -180,7 +180,7 @@ public class V1_8PacketFactory implements PacketFactory {
         return future;
     }
 
-    protected void add(Map<Integer, EntityData> map, EntityData data) {
+    protected void add(Map<Integer, EntityData<?>> map, EntityData<?> data) {
         map.put(data.getIndex(), data);
     }
 

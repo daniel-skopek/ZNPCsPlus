@@ -36,7 +36,7 @@ public class EncodedIntegerProperty<T> extends EntityPropertyImpl<T> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         T value = entity.getProperty(this);
         if (value == null) return;
         properties.put(index, newEntityData(index, type, decoder.decode(value)));

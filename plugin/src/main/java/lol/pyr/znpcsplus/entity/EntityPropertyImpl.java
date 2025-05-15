@@ -47,16 +47,16 @@ public abstract class EntityPropertyImpl<T> implements EntityProperty<T> {
         dependencies.add(property);
     }
 
-    protected static <V> EntityData newEntityData(int index, EntityDataType<V> type, V value) {
-        return new EntityData(index, type, value);
+    protected static <V> EntityData<V> newEntityData(int index, EntityDataType<V> type, V value) {
+        return new EntityData<>(index, type, value);
     }
 
-    public List<EntityData> applyStandalone(Player player, PacketEntity packetEntity, boolean isSpawned) {
-        Map<Integer, EntityData> map = new HashMap<>();
+    public List<EntityData<?>> applyStandalone(Player player, PacketEntity packetEntity, boolean isSpawned) {
+        Map<Integer, EntityData<?>> map = new HashMap<>();
         apply(player, packetEntity, isSpawned, map);
         for (EntityPropertyImpl<?> property : dependencies) property.apply(player, packetEntity, isSpawned, map);
         return new ArrayList<>(map.values());
     }
 
-    abstract public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties);
+    abstract public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties);
 }

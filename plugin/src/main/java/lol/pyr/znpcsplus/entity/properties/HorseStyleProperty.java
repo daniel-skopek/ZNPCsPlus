@@ -18,9 +18,13 @@ public class HorseStyleProperty extends EntityPropertyImpl<HorseStyle> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
-        EntityData oldData = properties.get(index);
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
+        EntityData<?> oldData = properties.get(index);
         HorseStyle value = entity.getProperty(this);
-        properties.put(index, newEntityData(index, EntityDataTypes.INT, (oldData == null ? 0 : ((int) oldData.getValue() & 0x00FF)) | (value.ordinal() << 8)));
+
+        int oldValue = (oldData != null && oldData.getValue() instanceof Integer) ? (Integer) oldData.getValue() : 0;
+        int newValue = (oldValue & 0x00FF) | (value.ordinal() << 8);
+        properties.put(index, newEntityData(index, EntityDataTypes.INT, newValue));
+
     }
 }

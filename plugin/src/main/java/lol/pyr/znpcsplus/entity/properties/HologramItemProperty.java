@@ -17,7 +17,7 @@ public class HologramItemProperty extends EntityPropertyImpl<ItemStack> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         properties.put(8, newEntityData(8, EntityDataTypes.ITEMSTACK, entity.getProperty(this)));
         properties.put(5, newEntityData(5, EntityDataTypes.BOOLEAN, true));
     }

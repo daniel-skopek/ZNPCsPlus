@@ -18,9 +18,13 @@ public class HorseColorProperty extends EntityPropertyImpl<HorseColor> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
-        EntityData oldData = properties.get(index);
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
+        EntityData<?> oldData = properties.get(index);
         HorseColor value = entity.getProperty(this);
-        properties.put(index, newEntityData(index, EntityDataTypes.INT, value.ordinal() | (oldData == null ? 0 : ((int) oldData.getValue() & 0xFF00))));
+        int oldValue = (oldData != null && oldData.getValue() instanceof Integer) ? (Integer) oldData.getValue() : 0;
+
+        int newValue = value.ordinal() | (oldValue & 0xFF00);
+        properties.put(index, newEntityData(index, EntityDataTypes.INT, newValue));
+
     }
 }

@@ -306,7 +306,7 @@ public class NpcTypeRegistryImpl implements NpcTypeRegistry {
 
         register(builder(p, "trader_llama", EntityTypes.TRADER_LLAMA)
                 .setHologramOffset(-0.105)
-                .addProperties("llama_variant"));
+                .addProperties("carpet_color", "llama_variant", "body"));
 
         register(builder(p, "wandering_trader", EntityTypes.WANDERING_TRADER)
                 .setHologramOffset(-0.025)

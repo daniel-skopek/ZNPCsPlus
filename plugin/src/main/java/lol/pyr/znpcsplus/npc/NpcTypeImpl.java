@@ -180,11 +180,35 @@ public class NpcTypeImpl implements NpcType {
             if (version.isNewerThanOrEquals(ServerVersion.V_1_20_5)) {
                 if (EntityTypes.isTypeInstanceOf(type, EntityTypes.WOLF)) {
                     addProperties("wolf_variant");
+                    if (version.isNewerThanOrEquals(ServerVersion.V_1_21)) {
+                        addProperties("body");
+                    } else {
+                        addProperties("chestplate");
+                    }
                 }
             }
             if (version.isNewerThanOrEquals(ServerVersion.V_1_21_4)) {
                 if (EntityTypes.isTypeInstanceOf(type, EntityTypes.CREAKING)) {
                     addProperties("creaking_crumbling");
+                }
+            }
+            if (EntityTypes.isTypeInstanceOf(type, EntityTypes.ZOMBIE)) {
+                if (version.isOlderThan(ServerVersion.V_1_9)) {
+                    addProperties("zombie_is_villager");
+                } else if (version.isOlderThan(ServerVersion.V_1_11)) {
+                    addProperties("zombie_type");
+                }
+
+                if (version.isOlderThan(ServerVersion.V_1_11)) {
+                    addProperties("is_converting");
+                }
+
+                if (version.isNewerThanOrEquals(ServerVersion.V_1_9) && version.isOlderThan(ServerVersion.V_1_14)) {
+                    addProperties("zombie_hands_held_up");
+                }
+
+                if (version.isNewerThanOrEquals(ServerVersion.V_1_13)) {
+                    addProperties("zombie_becoming_drowned");
                 }
             }
             return new NpcTypeImpl(name, type, hologramOffset, new HashSet<>(allowedProperties), defaultProperties);

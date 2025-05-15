@@ -22,7 +22,7 @@ public interface PacketFactory {
     void removeTeam(Player player, PacketEntity entity);
     void sendAllMetadata(Player player, PacketEntity entity, PropertyHolder properties);
     void sendEquipment(Player player, PacketEntity entity, Equipment equipment);
-    void sendMetadata(Player player, PacketEntity entity, List<EntityData> data);
+    void sendMetadata(Player player, PacketEntity entity, List<EntityData<?>> data);
     void sendHeadRotation(Player player, PacketEntity entity, float yaw, float pitch);
     void sendHandSwing(Player player, PacketEntity entity, boolean offHand);
     void setPassengers(Player player, int vehicle, int... passengers);

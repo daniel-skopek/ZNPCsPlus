@@ -19,10 +19,14 @@ public class GlowProperty extends EntityPropertyImpl<NamedColor> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         NamedColor value = entity.getProperty(this);
-        EntityData oldData = properties.get(0);
-        byte oldValue = oldData == null ? 0 : (byte) oldData.getValue();
+        EntityData<?> oldData = properties.get(0);
+//        byte oldValue = oldData == null ? 0 : (byte) oldData.getValue();
+        byte oldValue = 0;
+        if (oldData != null && oldData.getValue() instanceof Number) {
+            oldValue = ((Number) oldData.getValue()).byteValue();
+        }
         properties.put(0, newEntityData(0, EntityDataTypes.BYTE, (byte) (oldValue | (value == null ? 0 : 0x40))));
         // the team is already created with the right glow color in the packet factory if the npc isnt spawned yet
         if (isSpawned) {

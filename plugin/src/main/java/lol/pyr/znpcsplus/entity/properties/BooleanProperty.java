@@ -25,7 +25,7 @@ public class BooleanProperty extends EntityPropertyImpl<Boolean> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         boolean enabled = entity.getProperty(this);
         if (inverted) enabled = !enabled;
         if (legacy) properties.put(index, newEntityData(index, EntityDataTypes.BYTE, (byte) (enabled ? 1 : 0)));

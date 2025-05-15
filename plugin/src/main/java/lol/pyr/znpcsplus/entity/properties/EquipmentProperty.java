@@ -22,7 +22,7 @@ public class EquipmentProperty extends EntityPropertyImpl<ItemStack> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         packetFactory.sendEquipment(player, entity, new Equipment(slot, entity.getProperty(this)));
     }
 }

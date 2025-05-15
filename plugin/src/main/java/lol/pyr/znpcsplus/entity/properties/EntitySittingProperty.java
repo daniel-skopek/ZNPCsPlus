@@ -22,7 +22,7 @@ public class EntitySittingProperty extends EntityPropertyImpl<Boolean> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         boolean sitting = entity.getProperty(this);
         if (sitting) {
             if (entity.getVehicle() == null) {

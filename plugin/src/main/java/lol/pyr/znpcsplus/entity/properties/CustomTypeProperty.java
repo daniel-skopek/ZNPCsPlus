@@ -22,7 +22,7 @@ public class CustomTypeProperty<T, U> extends EntityPropertyImpl<T> {
     }
 
     @Override
-    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData> properties) {
+    public void apply(Player player, PacketEntity entity, boolean isSpawned, Map<Integer, EntityData<?>> properties) {
         properties.put(index, newEntityData(index, type, decoder.decode(entity.getProperty(this))));
     }
 

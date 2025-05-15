@@ -97,7 +97,7 @@ public class ZNpcsPlus {
         skinCache = new MojangSkinCache(configManager, new File(getDataFolder(), "skins"));
         propertyRegistry = new EntityPropertyRegistryImpl(skinCache, configManager);
 
-        NpcPropertyRegistryProvider.register(propertyRegistry);
+        NpcPropertyRegistryProvider.register(bootstrap, propertyRegistry);
         shutdownTasks.add(NpcPropertyRegistryProvider::unregister);
     }
 
@@ -130,7 +130,7 @@ public class ZNpcsPlus {
 
 
         PacketFactory packetFactory = setupPacketFactory(scheduler, propertyRegistry, configManager);
-        propertyRegistry.registerTypes(bootstrap, packetFactory, textSerializer, scheduler);
+        propertyRegistry.registerTypes(packetFactory, textSerializer, scheduler);
 
         BungeeConnector bungeeConnector = new BungeeConnector(bootstrap);
         ActionRegistryImpl actionRegistry = new ActionRegistryImpl();
