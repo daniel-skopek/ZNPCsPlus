@@ -48,7 +48,7 @@ public class MojangSkinCache {
         if (idCache.containsKey(name.toLowerCase())) return fetchByUUID(idCache.get(name.toLowerCase()).getId());
 
         return FutureUtil.exceptionPrintingSupplyAsync(() -> {
-            URL url = parseUrl("https://api.mojang.com/users/profiles/minecraft/" + name);
+            URL url = parseUrl("https://api.minecraftservices.com/minecraft/profile/lookup/name/" + name);
             HttpURLConnection connection = null;
             try {
                 connection = (HttpURLConnection) url.openConnection();
