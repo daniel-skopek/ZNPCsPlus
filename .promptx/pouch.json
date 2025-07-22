@@ -1,0 +1,28 @@
+{
+  "currentState": "initialized",
+  "stateHistory": [
+    {
+      "from": "initial",
+      "command": "init",
+      "timestamp": "2025-07-10T13:21:04.186Z",
+      "args": [
+        {
+          "workingDirectory": "/home/wangmeng123/znpcsplus",
+          "ideType": "cursor"
+        }
+      ]
+    },
+    {
+      "from": "initialized",
+      "command": "init",
+      "timestamp": "2025-07-10T13:21:38.336Z",
+      "args": [
+        {
+          "workingDirectory": "/home/wangmeng123/ZNPCsPlus-2.X",
+          "ideType": "cursor"
+        }
+      ]
+    }
+  ],
+  "lastUpdated": "2025-07-10T13:21:38.393Z"
+}
