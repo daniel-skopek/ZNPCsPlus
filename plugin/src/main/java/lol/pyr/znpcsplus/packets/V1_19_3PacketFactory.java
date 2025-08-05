@@ -11,6 +11,7 @@ import lol.pyr.znpcsplus.config.ConfigManager;
 import lol.pyr.znpcsplus.entity.EntityPropertyRegistryImpl;
 import lol.pyr.znpcsplus.entity.PacketEntity;
 import lol.pyr.znpcsplus.scheduling.TaskScheduler;
+import lol.pyr.znpcsplus.util.PapiUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
@@ -31,7 +32,12 @@ public class V1_19_3PacketFactory extends V1_17PacketFactory {
         skinned(player, properties, new UserProfile(entity.getUuid(), Integer.toString(entity.getEntityId()))).thenAccept(profile -> {
             WrapperPlayServerPlayerInfoUpdate.PlayerInfo info = new WrapperPlayServerPlayerInfoUpdate.PlayerInfo(
                     profile, false, 1, GameMode.CREATIVE,
-                    Component.text(configManager.getConfig().tabDisplayName().replace("{id}", Integer.toString(entity.getEntityId()))), null);
+                    Component.text(configManager.getConfig().tabDisplayName()
+                            .replace("{id}", Integer.toString(entity.getEntityId()))
+                            .replace("{name}", displayNameProperty != null && properties.hasProperty(displayNameProperty.get()) ?
+                                    PapiUtil.set(player, properties.getProperty(displayNameProperty.get())) :
+                                    "")
+                    ), null);
             sendPacket(player, new WrapperPlayServerPlayerInfoUpdate(EnumSet.of(WrapperPlayServerPlayerInfoUpdate.Action.ADD_PLAYER,
                     WrapperPlayServerPlayerInfoUpdate.Action.UPDATE_LISTED), info, info));
             future.complete(null);

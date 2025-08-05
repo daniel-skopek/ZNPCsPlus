@@ -21,8 +21,10 @@ import lol.pyr.znpcsplus.entity.PacketEntity;
 import lol.pyr.znpcsplus.entity.properties.attributes.AttributeProperty;
 import lol.pyr.znpcsplus.scheduling.TaskScheduler;
 import lol.pyr.znpcsplus.skin.BaseSkinDescriptor;
+import lol.pyr.znpcsplus.util.LazyLoader;
 import lol.pyr.znpcsplus.util.NamedColor;
 import lol.pyr.znpcsplus.util.NpcLocation;
+import lol.pyr.znpcsplus.util.PapiUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -39,12 +41,16 @@ public class V1_8PacketFactory implements PacketFactory {
     protected final LegacyComponentSerializer textSerializer;
     protected ConfigManager configManager;
 
+    protected LazyLoader<EntityPropertyImpl<String>> displayNameProperty;
+
     public V1_8PacketFactory(TaskScheduler scheduler, PacketEventsAPI<Plugin> packetEvents, EntityPropertyRegistryImpl propertyRegistry, LegacyComponentSerializer textSerializer, ConfigManager configManager) {
         this.scheduler = scheduler;
         this.packetEvents = packetEvents;
         this.propertyRegistry = propertyRegistry;
         this.textSerializer = textSerializer;
         this.configManager = configManager;
+
+        this.displayNameProperty = LazyLoader.of(() -> propertyRegistry.getByName("display_name", String.class));
     }
 
     @Override
@@ -100,7 +106,12 @@ public class V1_8PacketFactory implements PacketFactory {
         skinned(player, properties, new UserProfile(entity.getUuid(), Integer.toString(entity.getEntityId()))).thenAccept(profile -> {
             sendPacket(player, new WrapperPlayServerPlayerInfo(
                     WrapperPlayServerPlayerInfo.Action.ADD_PLAYER, new WrapperPlayServerPlayerInfo.PlayerData(
-                            Component.text(configManager.getConfig().tabDisplayName().replace("{id}", Integer.toString(entity.getEntityId()))),
+                            Component.text(configManager.getConfig().tabDisplayName()
+                                    .replace("{id}", Integer.toString(entity.getEntityId()))
+                                    .replace("{name}", displayNameProperty != null && properties.hasProperty(displayNameProperty.get()) ?
+                                            PapiUtil.set(player, properties.getProperty(displayNameProperty.get())) :
+                                            "")
+                            ),
                     profile, GameMode.CREATIVE, 1)));
             future.complete(null);
         });
