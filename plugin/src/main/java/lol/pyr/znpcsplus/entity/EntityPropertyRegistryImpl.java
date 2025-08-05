@@ -794,6 +794,12 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
     }
 
     @Override
+    public <T> void registerDummy(String name, T defaultValue, boolean playerModifiable) {
+        register(new DummyProperty<>(name, defaultValue, playerModifiable));
+
+    }
+
+    @Override
     public void registerDummy(String name, Class<?> type, boolean playerModifiable) {
         register(new DummyProperty<>(name, type, playerModifiable));
     }
