@@ -89,12 +89,9 @@ public class NpcProcessorTask extends BukkitRunnable {
                     continue;
                 }
                 if (permissionRequired) {
-                    String defaultPerm = "znpcsplus.npc." + entry.getId();
-                    boolean havePermission = (permissionNeeded != null && !player.hasPermission(permissionNeeded)) || !player.hasPermission(defaultPerm);
-                    if (havePermission) {
-                        if (npc.isVisibleTo(player)) {
-                            npc.hide(player);
-                        }
+                    String requiredPerm = (permissionNeeded != null) ? permissionNeeded : "znpcsplus.npc." + entry.getId();
+                    if (!player.hasPermission(requiredPerm) && npc.isVisibleTo(player)) {
+                        npc.hide(player);
                         continue;
                     }
                 }
