@@ -88,12 +88,10 @@ public class NpcProcessorTask extends BukkitRunnable {
                     if (npc.isVisibleTo(player)) npc.hide(player);
                     continue;
                 }
-                if (permissionRequired) {
-                    String requiredPerm = (permissionNeeded != null) ? permissionNeeded : "znpcsplus.npc." + entry.getId();
-                    if (!player.hasPermission(requiredPerm) && npc.isVisibleTo(player)) {
-                        npc.hide(player);
-                        continue;
-                    }
+                if (permissionRequired && !player.hasPermission(permissionNeeded != null ? permissionNeeded : "znpcsplus.npc." + entry.getId())) {
+                    if (npc.isVisibleTo(player)) npc.hide(player);
+
+                    continue;
                 }
                 double distance = player.getLocation().distanceSquared(npc.getBukkitLocation());
 
