@@ -205,7 +205,8 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         // Player
         register(new DummyProperty<>("skin", SkinDescriptor.class, false));
         final int skinLayersIndex;
-        if (ver.isNewerThanOrEquals(ServerVersion.V_1_17)) skinLayersIndex = 17;
+        if (ver.isNewerThanOrEquals(ServerVersion.V_1_21_9)) skinLayersIndex = 16;
+        else if (ver.isNewerThanOrEquals(ServerVersion.V_1_17)) skinLayersIndex = 17;
         else if (ver.isNewerThanOrEquals(ServerVersion.V_1_16)) skinLayersIndex = 16;
         else if (ver.isNewerThanOrEquals(ServerVersion.V_1_14)) skinLayersIndex = 15;
         else if (ver.isNewerThanOrEquals(ServerVersion.V_1_10)) skinLayersIndex = 13;
@@ -565,6 +566,7 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
             return compound;
         };
         int shoulderIndex = skinLayersIndex+2;
+        if (ver.isNewerThanOrEquals(ServerVersion.V_1_21_9)) shoulderIndex += 1;
         register(new NBTProperty<>("shoulder_entity_left", ParrotVariant.class, shoulderIndex++, parrotVariantDecoder, true));
         register(new NBTProperty<>("shoulder_entity_right", ParrotVariant.class, shoulderIndex, parrotVariantDecoder, true));
 
