@@ -740,6 +740,14 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
 
         // Creaking
         register(new BooleanProperty("creaking_crumbling", 18, false, legacyBooleans));
+
+        if (!ver.isNewerThanOrEquals(ServerVersion.V_1_21_9)) return;
+
+        // Copper Golem
+        register(new CustomTypeProperty<>("weathering_copper_state", 16, WeatheringCopperState.UNAFFECTED, EntityDataTypes.WEATHERING_COPPER_STATE, state ->
+                com.github.retrooper.packetevents.protocol.entity.data.struct.WeatheringCopperState.valueOf(state.name())));
+        register(new CustomTypeProperty<>("copper_golem_state", 17, CopperGolemState.IDlE, EntityDataTypes.COPPER_GOLEM_STATE, state ->
+                com.github.retrooper.packetevents.protocol.entity.data.struct.CopperGolemState.valueOf(state.name())));
     }
 
     private void registerSerializer(PropertySerializer<?> serializer) {
