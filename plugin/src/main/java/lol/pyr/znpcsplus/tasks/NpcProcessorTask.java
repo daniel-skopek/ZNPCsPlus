@@ -49,7 +49,7 @@ public class NpcProcessorTask extends BukkitRunnable {
         double lookDistance;
         boolean lookReturn;
         boolean permissionRequired;
-        String permissionNode;
+        String permissionNode = null;
         boolean playerKnockback;
         String playerKnockbackExemptPermission = null;
         double playerKnockbackDistance = 0;
@@ -70,7 +70,9 @@ public class NpcProcessorTask extends BukkitRunnable {
             lookDistance =  NumberConversions.square(npc.getProperty(lookDistanceProperty));
             lookReturn = npc.getProperty(lookReturnProperty);
             permissionRequired = npc.getProperty(permissionRequiredProperty);
-            permissionNode = npc.getProperty(permissionNodeProperty);
+            if(permissionRequired){
+                permissionNode = npc.getProperty(permissionNodeProperty);
+            }
             playerKnockback = npc.getProperty(playerKnockbackProperty);
             if (playerKnockback) {
                 playerKnockbackExemptPermission = npc.getProperty(playerKnockbackExemptPermissionProperty);
