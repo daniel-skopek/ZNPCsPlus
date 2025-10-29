@@ -135,6 +135,7 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         register(new DummyProperty<>("view_distance", configManager.getConfig().viewDistance()));
 
         register(new DummyProperty<>("permission_required", false));
+        register(new DummyProperty<>("premission_required_perm", String.class));
 
         register(new ForceBodyRotationProperty(taskScheduler));
 

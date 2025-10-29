@@ -35,6 +35,7 @@ public class NpcProcessorTask extends BukkitRunnable {
         EntityPropertyImpl<Double> lookDistanceProperty = propertyRegistry.getByName("look_distance", Double.class);
         EntityPropertyImpl<Boolean> lookReturnProperty = propertyRegistry.getByName("look_return", Boolean.class);
         EntityPropertyImpl<Boolean> permissionRequiredProperty = propertyRegistry.getByName("permission_required", Boolean.class);
+        EntityPropertyImpl<String> permissionNodeProperty = propertyRegistry.getByName("premission_required_perm", String.class);
         EntityPropertyImpl<Boolean> playerKnockbackProperty = propertyRegistry.getByName("player_knockback", Boolean.class);
         EntityPropertyImpl<String> playerKnockbackExemptPermissionProperty = propertyRegistry.getByName("player_knockback_exempt_permission", String.class);
         EntityPropertyImpl<Double> playerKnockbackDistanceProperty = propertyRegistry.getByName("player_knockback_distance", Double.class);
@@ -48,6 +49,7 @@ public class NpcProcessorTask extends BukkitRunnable {
         double lookDistance;
         boolean lookReturn;
         boolean permissionRequired;
+        String permissionRequiredPerm = null;
         boolean playerKnockback;
         String playerKnockbackExemptPermission = null;
         double playerKnockbackDistance = 0;
@@ -68,6 +70,9 @@ public class NpcProcessorTask extends BukkitRunnable {
             lookDistance =  NumberConversions.square(npc.getProperty(lookDistanceProperty));
             lookReturn = npc.getProperty(lookReturnProperty);
             permissionRequired = npc.getProperty(permissionRequiredProperty);
+            if(permissionRequired){
+                permissionRequiredPerm = npc.getProperty(permissionNodeProperty);
+            }
             playerKnockback = npc.getProperty(playerKnockbackProperty);
             if (playerKnockback) {
                 playerKnockbackExemptPermission = npc.getProperty(playerKnockbackExemptPermissionProperty);
@@ -85,7 +90,7 @@ public class NpcProcessorTask extends BukkitRunnable {
                     if (npc.isVisibleTo(player)) npc.hide(player);
                     continue;
                 }
-                if (permissionRequired && !player.hasPermission("znpcsplus.npc." + entry.getId())) {
+                if (permissionRequired && !player.hasPermission(permissionRequiredPerm != null ? permissionRequiredPerm : "znpcsplus.npc." + entry.getId())) {
                     if (npc.isVisibleTo(player)) npc.hide(player);
                     continue;
                 }
