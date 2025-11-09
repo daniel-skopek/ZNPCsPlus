@@ -67,10 +67,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ZNpcsPlus {
     private final LegacyComponentSerializer textSerializer = LegacyComponentSerializer.builder()
@@ -127,7 +124,7 @@ public class ZNpcsPlus {
 
         TaskScheduler scheduler = FoliaUtil.isFolia() ? new FoliaScheduler(bootstrap) : new SpigotScheduler(bootstrap);
         shutdownTasks.add(scheduler::cancelAll);
-
+        shutdownTasks.add(Viewable::shutdownExecutor);
 
         PacketFactory packetFactory = setupPacketFactory(scheduler, propertyRegistry, configManager);
         propertyRegistry.registerTypes(packetFactory, textSerializer, scheduler);
@@ -217,6 +214,7 @@ public class ZNpcsPlus {
 
     public void onDisable() {
         NpcApiProvider.unregister();
+        Collections.reverse(shutdownTasks);
         for (Runnable runnable : shutdownTasks) try {
             runnable.run();
         } catch (Throwable throwable) {
