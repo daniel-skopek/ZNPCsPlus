@@ -77,11 +77,14 @@ public class CitizensImporter implements DataImporter {
             } catch (IllegalArgumentException e) {
                 uuid = UUID.randomUUID();
             }
-            String world = npcSection.getString("traits.location.world");
-            if (world == null) {
-                world = Bukkit.getWorlds().get(0).getName();
+
+            // https://github.com/CitizensDev/CitizensAPI/commit/daa9421fc5ae18389c7b041cb55ee6860883a702
+            String worldId = npcSection.getString("traits.location.worldid");
+            String worldName = Bukkit.getWorld(UUID.fromString(worldId)).getName();
+            if (worldName == null) {
+                worldName = Bukkit.getWorlds().get(0).getName();
             }
-            NpcImpl npc = new NpcImpl(uuid, propertyRegistry, configManager, packetFactory, textSerializer, world, typeRegistry.getByName("armor_stand"), new NpcLocation(0, 0, 0, 0, 0));
+            NpcImpl npc = new NpcImpl(uuid, propertyRegistry, configManager, packetFactory, textSerializer, worldName, typeRegistry.getByName("armor_stand"), new NpcLocation(0, 0, 0, 0, 0));
 
             ConfigurationSection traits = npcSection.getConfigurationSection("traits");
             if (traits != null) {
