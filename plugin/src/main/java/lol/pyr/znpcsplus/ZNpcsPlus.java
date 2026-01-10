@@ -298,6 +298,7 @@ public class ZNpcsPlus {
         registerEnumParser(manager, WoldVariant.class, incorrectUsageMessage);
         registerEnumParser(manager, NpcStorageType.class, incorrectUsageMessage);
         registerEnumParser(manager, SkeletonType.class, incorrectUsageMessage);
+        registerEnumParser(manager, ZombieNautilusVariant.class, incorrectUsageMessage);
 
         manager.registerCommand("npc", new MultiCommand(bootstrap.loadHelpMessage("root"))
                 .addSubcommand("center", new CenterCommand(npcRegistry))

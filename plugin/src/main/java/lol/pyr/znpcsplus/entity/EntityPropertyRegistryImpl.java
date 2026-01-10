@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
+import com.github.retrooper.packetevents.protocol.entity.nautilus.ZombieNautilusVariants;
 import com.github.retrooper.packetevents.protocol.entity.pose.EntityPose;
 import com.github.retrooper.packetevents.protocol.nbt.NBTCompound;
 import com.github.retrooper.packetevents.protocol.nbt.NBTInt;
@@ -95,6 +96,7 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
         registerEnumSerializer(ArmadilloState.class);
         registerEnumSerializer(WoldVariant.class);
         registerEnumSerializer(SkeletonType.class);
+        registerEnumSerializer(ZombieNautilusVariant.class);
 
         registerPrimitiveSerializers(Integer.class, Boolean.class, Double.class, Float.class, Long.class, Short.class, Byte.class, String.class);
 
@@ -749,6 +751,16 @@ public class EntityPropertyRegistryImpl implements EntityPropertyRegistry {
                 com.github.retrooper.packetevents.protocol.entity.data.struct.WeatheringCopperState.valueOf(state.name())));
         register(new CustomTypeProperty<>("copper_golem_state", 17, CopperGolemState.IDlE, EntityDataTypes.COPPER_GOLEM_STATE, state ->
                 com.github.retrooper.packetevents.protocol.entity.data.struct.CopperGolemState.valueOf(state.name())));
+
+        if (!ver.isNewerThanOrEquals(ServerVersion.V_1_21_11)) return;
+
+        // Nautilus
+        int nautilusIndex = 19;
+        nautilusIndex++; // skip unused index
+
+        // Zombie Nautilus
+        register(new CustomTypeProperty<>("zombie_nautilus_variant",  nautilusIndex, ZombieNautilusVariant.TEMPERATE, EntityDataTypes.ZOMBIE_NAUTILUS_VARIANT, variant ->
+                ZombieNautilusVariants.getRegistry().getByNameOrThrow(variant.name().toLowerCase())));
     }
 
     private void registerSerializer(PropertySerializer<?> serializer) {

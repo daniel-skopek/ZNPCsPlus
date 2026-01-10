@@ -413,6 +413,23 @@ public class NpcTypeRegistryImpl implements NpcTypeRegistry {
         register(builder(p, "copper_golem", EntityTypes.COPPER_GOLEM)
                 .setHologramOffset(-0.995)
                 .addProperties("weathering_copper_state", "copper_golem_state"));
+
+        if (!version.isNewerThanOrEquals(ServerVersion.V_1_21_11)) return;
+
+        register(builder(p, "nautilus", EntityTypes.NAUTILUS)
+                .setHologramOffset(-1.025));
+
+        register(builder(p, "zombie_nautilus", EntityTypes.ZOMBIE_NAUTILUS)
+                .setHologramOffset(-1.025)
+                .addProperties("zombie_nautilus_variant"));
+
+        register(builder(p, "camel_husk", EntityTypes.CAMEL_HUSK)
+                .setHologramOffset(0.4)
+                .addProperties("bashing", "camel_sitting"));
+
+        register(builder(p, "parched", EntityTypes.PARCHED)
+                .setHologramOffset(0.015)
+                .addProperties("entity_sitting"));
     }
 
     public Collection<NpcType> getAll() {
