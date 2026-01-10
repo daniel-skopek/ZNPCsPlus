@@ -17,6 +17,7 @@ import lol.pyr.znpcsplus.util.NpcLocation;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -80,7 +81,12 @@ public class CitizensImporter implements DataImporter {
 
             // https://github.com/CitizensDev/CitizensAPI/commit/daa9421fc5ae18389c7b041cb55ee6860883a702
             String worldId = npcSection.getString("traits.location.worldid");
-            String worldName = Bukkit.getWorld(UUID.fromString(worldId)).getName();
+            String worldName;
+            try {
+                worldName = Bukkit.getWorld(UUID.fromString(worldId)).getName();
+            } catch (IllegalArgumentException e) {
+                worldName = Bukkit.getWorld(worldId) != null ? Bukkit.getWorld(worldId).getName() : null;
+            }
             if (worldName == null) {
                 worldName = Bukkit.getWorlds().get(0).getName();
             }
