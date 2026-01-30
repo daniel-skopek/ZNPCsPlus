@@ -3,6 +3,7 @@ package lol.pyr.znpcsplus.interaction;
 import lol.pyr.znpcsplus.api.interaction.ActionFactory;
 import lol.pyr.znpcsplus.api.interaction.InteractionAction;
 import lol.pyr.znpcsplus.api.interaction.InteractionType;
+import lol.pyr.znpcsplus.config.MainConfig;
 import lol.pyr.znpcsplus.interaction.consolecommand.ConsoleCommandAction;
 import lol.pyr.znpcsplus.interaction.message.MessageAction;
 import lol.pyr.znpcsplus.interaction.playerchat.PlayerChatAction;
@@ -18,16 +19,18 @@ public class ActionFactoryImpl implements ActionFactory {
     private final BukkitAudiences adventure;
     private final LegacyComponentSerializer textSerializer;
     private final BungeeConnector bungeeConnector;
+    private final MainConfig config;
 
-    public ActionFactoryImpl(TaskScheduler scheduler, BukkitAudiences adventure, LegacyComponentSerializer textSerializer, BungeeConnector bungeeConnector) {
+    public ActionFactoryImpl(TaskScheduler scheduler, BukkitAudiences adventure, LegacyComponentSerializer textSerializer, BungeeConnector bungeeConnector, MainConfig config) {
         this.scheduler = scheduler;
         this.adventure = adventure;
         this.textSerializer = textSerializer;
         this.bungeeConnector = bungeeConnector;
+        this.config = config;
     }
 
     public InteractionAction createConsoleCommandAction(String command, InteractionType interactionType, long cooldown, long delay) {
-        return new ConsoleCommandAction(this.scheduler, command, interactionType, cooldown, delay);
+        return new ConsoleCommandAction(this.scheduler, command, interactionType, cooldown, delay, this.config);
     }
 
     public InteractionAction createMessageAction(String message, InteractionType interactionType, long cooldown, long delay) {

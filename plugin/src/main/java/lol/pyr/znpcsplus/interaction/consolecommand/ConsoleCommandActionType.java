@@ -3,6 +3,7 @@ package lol.pyr.znpcsplus.interaction.consolecommand;
 import lol.pyr.director.adventure.command.CommandContext;
 import lol.pyr.director.common.command.CommandExecutionException;
 import lol.pyr.znpcsplus.api.interaction.InteractionType;
+import lol.pyr.znpcsplus.config.MainConfig;
 import lol.pyr.znpcsplus.interaction.InteractionActionImpl;
 import lol.pyr.znpcsplus.api.interaction.InteractionActionType;
 import lol.pyr.znpcsplus.interaction.InteractionCommandHandler;
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class ConsoleCommandActionType implements InteractionActionType<ConsoleCommandAction>, InteractionCommandHandler {
     private final TaskScheduler scheduler;
+    private final MainConfig config;
 
-    public ConsoleCommandActionType(TaskScheduler scheduler) {
+    public ConsoleCommandActionType(TaskScheduler scheduler, MainConfig config) {
         this.scheduler = scheduler;
+        this.config = config;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class ConsoleCommandActionType implements InteractionActionType<ConsoleCo
     public ConsoleCommandAction deserialize(String str) {
         String[] split = str.split(";");
         InteractionType type = split.length > 2 ? InteractionType.valueOf(split[2]) : InteractionType.ANY_CLICK;
-        return new ConsoleCommandAction(scheduler, new String(Base64.getDecoder().decode(split[0]), StandardCharsets.UTF_8), type, Long.parseLong(split[1]), Long.parseLong(split.length > 3 ? split[3] : "0"));
+        return new ConsoleCommandAction(scheduler, new String(Base64.getDecoder().decode(split[0]), StandardCharsets.UTF_8), type, Long.parseLong(split[1]), Long.parseLong(split.length > 3 ? split[3] : "0"), config);
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ConsoleCommandActionType implements InteractionActionType<ConsoleCo
         long cooldown = (long) (context.parse(Double.class) * 1000D);
         long delay = (long) (context.parse(Integer.class) * 1D);
         String command = context.dumpAllArgs();
-        return new ConsoleCommandAction(scheduler, command, type, cooldown, delay);
+        return new ConsoleCommandAction(scheduler, command, type, cooldown, delay, config);
     }
 
     @Override
