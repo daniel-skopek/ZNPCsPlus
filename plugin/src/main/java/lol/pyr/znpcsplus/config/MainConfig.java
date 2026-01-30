@@ -5,6 +5,8 @@ import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfKey;
 import space.arim.dazzleconf.annote.SubSection;
 
+import java.util.List;
+
 import static space.arim.dazzleconf.annote.ConfDefault.*;
 
 public interface MainConfig {
@@ -78,4 +80,18 @@ public interface MainConfig {
     @ConfComments("Should the plugin fake the enforce secure chat packet to hide the popup?")
     @DefaultBoolean(false)
     boolean fakeEnforceSecureChat();
+
+    @ConfKey("console-command-whitelist-enabled")
+    @ConfComments("Should the console command whitelist be enabled? If disabled, all commands are allowed.")
+    @DefaultBoolean(false)
+    boolean consoleCommandWhitelistEnabled();
+
+    @ConfKey("console-command-whitelist")
+    @ConfComments({
+            "List of commands that are allowed to be executed as console commands by NPCs.",
+            "Only the base command name is needed (e.g., 'give' for '/give player item')",
+            "Commands are case-insensitive"
+    })
+    @DefaultStrings({"give", "tp", "teleport", "say", "tell", "msg"})
+    List<String> consoleCommandWhitelist();
 }

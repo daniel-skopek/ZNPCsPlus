@@ -2,6 +2,7 @@ package lol.pyr.znpcsplus.conversion.citizens.model.traits;
 
 import lol.pyr.znpcsplus.api.interaction.InteractionAction;
 import lol.pyr.znpcsplus.api.interaction.InteractionType;
+import lol.pyr.znpcsplus.config.MainConfig;
 import lol.pyr.znpcsplus.conversion.citizens.model.SectionCitizensTrait;
 import lol.pyr.znpcsplus.interaction.consolecommand.ConsoleCommandAction;
 import lol.pyr.znpcsplus.interaction.playercommand.PlayerCommandAction;
@@ -14,10 +15,12 @@ import java.util.Set;
 
 public class CommandTrait extends SectionCitizensTrait {
     private final TaskScheduler scheduler;
+    private final MainConfig config;
 
-    public CommandTrait(TaskScheduler scheduler) {
+    public CommandTrait(TaskScheduler scheduler, MainConfig config) {
         super("commandtrait");
         this.scheduler = scheduler;
+        this.config = config;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class CommandTrait extends SectionCitizensTrait {
                         if (isPlayerCommand) {
                             action = new PlayerCommandAction(scheduler, command, clickType, cooldown, delay);
                         } else {
-                            action = new ConsoleCommandAction(scheduler, command, clickType, cooldown, delay);
+                            action = new ConsoleCommandAction(scheduler, command, clickType, cooldown, delay, config);
                         }
                         npc.addAction(action);
                     }

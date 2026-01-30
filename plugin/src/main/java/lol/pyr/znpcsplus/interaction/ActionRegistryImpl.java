@@ -1,6 +1,7 @@
 package lol.pyr.znpcsplus.interaction;
 
 import lol.pyr.znpcsplus.api.interaction.*;
+import lol.pyr.znpcsplus.config.MainConfig;
 import lol.pyr.znpcsplus.interaction.consolecommand.ConsoleCommandActionType;
 import lol.pyr.znpcsplus.interaction.message.MessageActionType;
 import lol.pyr.znpcsplus.interaction.playerchat.PlayerChatActionType;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 public class ActionRegistryImpl implements ActionRegistry {
     private final Map<Class<?>, InteractionActionType<?>> serializerMap = new HashMap<>();
 
-    public void registerTypes(TaskScheduler taskScheduler, BukkitAudiences adventure, LegacyComponentSerializer textSerializer, BungeeConnector bungeeConnector) {
-        register(new ConsoleCommandActionType(taskScheduler));
+    public void registerTypes(TaskScheduler taskScheduler, BukkitAudiences adventure, LegacyComponentSerializer textSerializer, BungeeConnector bungeeConnector, MainConfig config) {
+        register(new ConsoleCommandActionType(taskScheduler, config));
         register(new PlayerCommandActionType(taskScheduler));
         register(new SwitchServerActionType(bungeeConnector));
         register(new MessageActionType(adventure, textSerializer));

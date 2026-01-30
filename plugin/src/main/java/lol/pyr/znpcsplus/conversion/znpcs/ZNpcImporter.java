@@ -230,7 +230,7 @@ public class ZNpcImporter implements DataImporter {
             case "cmd":
                 return new PlayerCommandAction(taskScheduler, parameter, clickType, cooldown * 1000L, 0);
             case "console":
-                return new ConsoleCommandAction(taskScheduler, parameter, clickType, cooldown * 1000L, 0);
+                return new ConsoleCommandAction(taskScheduler, parameter, clickType, cooldown * 1000L, 0, configManager.getConfig());
             case "chat":
                 return new PlayerChatAction(taskScheduler, parameter, clickType, cooldown * 1000L, 0);
             case "message":

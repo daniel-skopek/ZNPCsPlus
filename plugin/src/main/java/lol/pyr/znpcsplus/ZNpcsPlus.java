@@ -131,7 +131,7 @@ public class ZNpcsPlus {
 
         BungeeConnector bungeeConnector = new BungeeConnector(bootstrap);
         ActionRegistryImpl actionRegistry = new ActionRegistryImpl();
-        ActionFactoryImpl actionFactory = new ActionFactoryImpl(scheduler, adventure, textSerializer, bungeeConnector);
+        ActionFactoryImpl actionFactory = new ActionFactoryImpl(scheduler, adventure, textSerializer, bungeeConnector, configManager.getConfig());
         NpcTypeRegistryImpl typeRegistry = new NpcTypeRegistryImpl();
         NpcSerializerRegistryImpl serializerRegistry = new NpcSerializerRegistryImpl(packetFactory, configManager, actionRegistry, typeRegistry, propertyRegistry, textSerializer);
         NpcRegistryImpl npcRegistry = new NpcRegistryImpl(configManager, this, packetFactory, actionRegistry,
@@ -151,7 +151,7 @@ public class ZNpcsPlus {
         shutdownTasks.add(bungeeConnector::unregisterChannel);
 
         typeRegistry.registerDefault(packetEvents, propertyRegistry);
-        actionRegistry.registerTypes(scheduler, adventure, textSerializer, bungeeConnector);
+        actionRegistry.registerTypes(scheduler, adventure, textSerializer, bungeeConnector, configManager.getConfig());
         packetEvents.getEventManager().registerListener(new InteractionPacketListener(userManager, npcRegistry, typeRegistry, scheduler), PacketListenerPriority.MONITOR);
         packetEvents.getEventManager().registerListener(new ClientPacketListener(configManager), PacketListenerPriority.LOWEST);
         new Metrics(bootstrap, 18244);

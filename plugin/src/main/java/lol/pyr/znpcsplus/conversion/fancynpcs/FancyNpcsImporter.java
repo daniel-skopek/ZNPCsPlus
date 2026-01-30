@@ -137,7 +137,7 @@ public class FancyNpcsImporter implements DataImporter {
             String serverCommand = npcSection.getString("serverCommand");
             if (serverCommand != null) {
                 long cooldown = npcSection.getLong("interactionCooldown", 0);
-                npc.addAction(new ConsoleCommandAction(scheduler, serverCommand, InteractionType.ANY_CLICK, cooldown, 0));
+                npc.addAction(new ConsoleCommandAction(scheduler, serverCommand, InteractionType.ANY_CLICK, cooldown, 0, configManager.getConfig()));
             }
             List<String> messages = npcSection.getStringList("messages");
             if (!messages.isEmpty()) {
